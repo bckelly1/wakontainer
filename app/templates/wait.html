@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wait...</title>
+    <style>
+        .loading-text {
+            padding-bottom: 100px;
+            position: absolute;
+            bottom: calc(50% + 80px);
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 40px;
+            text-shadow: 0 0 10px #4facfe;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #25d5ab, #ff69b4, #8e44ad, #1abc9c);
+            background-size: 400% 400%;
+            animation: gradient 10s linear infinite;
+            perspective: 1000px;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .spinner {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spin 3s ease infinite;
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 10px solid white;
+            /* Increased border width */
+            border-radius: 60%;
+            opacity: 0.7;
+        }
+
+        .face:nth-child(1) {
+            transform: rotateY(0deg) translateZ(50px);
+        }
+
+        .face:nth-child(2) {
+            transform: rotateY(90deg) translateZ(50px);
+        }
+
+        .face:nth-child(3) {
+            transform: rotateY(180deg) translateZ(50px);
+        }
+
+        .face:nth-child(4) {
+            transform: rotateY(270deg) translateZ(50px);
+        }
+
+        .face:nth-child(5) {
+            transform: rotateX(90deg) translateZ(50px);
+        }
+
+        .face:nth-child(6) {
+            transform: rotateX(-90deg) translateZ(50px);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loading-text">Waking up {{ app_name }}...</div>
+
+    <div class="spinner">
+        <div class="face"></div>
+        <div class="face"></div>
+        <div class="face"></div>
+        <div class="face"></div>
+        <div class="face"></div>
+        <div class="face"></div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    async function artificial_wait() {
+        await new Promise(r => setTimeout(r, {{ wait_time }}*1000)); // artificial wait, for user experience
+    window.location.href = '/';
+        }
+    artificial_wait();
+</script>

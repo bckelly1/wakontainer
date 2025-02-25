@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not found</title>
+    <style>
+        .loading-text h2{
+            text-align: center;
+            color: #fff;
+            font-size: 40px;
+            text-shadow: 0 0 10px #4facfe;
+        }
+
+        .loading-text p{
+            text-align: center;
+            color: #fff;
+            font-size: 30px;
+            text-shadow: 0 0 10px #4facfe;
+        }
+
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(-45deg, #db0000, #8f053a, #b94112, #740606);
+            background-size: 400% 400%;
+            animation: gradient 10s linear infinite;
+            perspective: 1000px;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loading-text">
+        <h2>Hm, seems like you are lost</h2>
+        <p>Contact admin if you think you are not</p>
+    </div>
+</body>
+
+</html>
+
+<script>
+    async function artificial_wait() {
+        await new Promise(r => setTimeout(r, {{ wait_time }}* 1000)); // artificial wait, for user experience
+    window.location.href = '/';
+        }
+    artificial_wait();
+</script>
