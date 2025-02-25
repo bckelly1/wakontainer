@@ -93,7 +93,10 @@ Wakontainer sits between a reverse proxy and a web service running in a containe
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- ROADMAP -->
+## Demo
+Here is a video that demonstrates the basic of wakontainer. The lags are due to the way I screenrecorded the video.
+
+[demo.webm](https://github.com/user-attachments/assets/d6f6c7bb-66a7-4b45-8175-b3910b78d84e)
 
 ## Contributing
 
