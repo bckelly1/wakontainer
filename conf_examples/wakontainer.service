@@ -1,0 +1,15 @@
+[Unit]
+Description=Manage container life
+After=network.target
+
+[Service]
+User=root # or another user which can access the docker socket
+Group=root
+WorkingDirectory=/opt/wakontainer # path to wakontainer source
+
+# Here I used a venv, it may not be your case so change accordingly
+# In this example, wakontainer server will listen on port 8081. If you decide to use another port, change your nginx confs accordingly
+ExecStart=/opt/wakontainer/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8081 app:app --preload
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+services:
+  mycontainer:
+    container_name: mycontainer
+    image: docker/image
+    ports:
+      - 127.0.0.1:8080:8080 # configuration depends on your needs and on the container
+    labels:
+      wakontainer.enable: "true" # NEEDED container will be supervised by wakontainer
+      wakontainer.url: "files.mybox.htb" # NEEDED container will be accessed through this URL (needed to associate an incoming request with a container)
+      wakontainer.wait_page_time: 5 # OPTIONAL (default=3) time (in seconds) to wait after starting the container to redirect the user to the page
+      wakontainer.max_lifetime: 20 # OPTIONAL (default=60) max time (in seconds) before a container is shutdown. Counter is reset each time a request is received
