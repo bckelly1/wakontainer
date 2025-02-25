@@ -38,6 +38,7 @@
     </li>
     <li><a href="#deploy-with-gunicorn">Deploy with gunicorn</a></li>
     <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#demo">Demo</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
