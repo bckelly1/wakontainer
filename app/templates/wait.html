@@ -40,6 +40,14 @@
             }
         }
 
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
         .spinner {
             width: 100px;
             height: 100px;
@@ -106,12 +114,15 @@
         <div class="face"></div>
     </div>
 </body>
+<footer>
+    <p>with 🤍 from <a href="">wakontainer</a></p>
+</footer>
 
 </html>
 
 <script>
     async function artificial_wait() {
-        await new Promise(r => setTimeout(r, {{ wait_time }}*1000)); // artificial wait, for user experience
+        await new Promise(r => setTimeout(r, {{ wait_time }}* 1000)); // artificial wait, for user experience
     window.location.href = '/';
         }
     artificial_wait();
