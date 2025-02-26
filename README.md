@@ -92,6 +92,12 @@ Wakontainer sits between a reverse proxy and a web service running in a containe
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Deploy with Docker compose
+
+1. Create the image `docker build . -t wakontainer`
+2. Create a compose file (see [example](conf_examples/mycontainer-compose.yaml))
+3. Run the container `docker compose up`
+
 ## Demo
 Here is a video that demonstrates the basic of wakontainer. The lags are due to the way I screenrecorded the video.
 
