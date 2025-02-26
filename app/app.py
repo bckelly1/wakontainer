@@ -51,6 +51,11 @@ def stop_containers():
             log.debug(f"Unknown last request time for container {c_name}. Checking if stop needed")
             container.stop_if_needed(max_lifetime)
 
+@scheduler.task('interval', id='update_conf', seconds=shared_dict['conf']['default']['update_conf_interval'])
+def update_conf():
+    log.debug("Launching scheduled conf update")
+    shared_dict['conf'] = create_conf()
+
 @app.route('/verif')
 def index():
     orig = request.headers.get('X-Original-Host')

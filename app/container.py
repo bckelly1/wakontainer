@@ -13,6 +13,7 @@ def create_conf():
     for container in client.containers.list(all=True):
         if container.labels.get('wakontainer.enable'):
             name = container.name
+            log.debug(f"Container {name} has label wakontainer.enable set to true")
             url = container.labels.get('wakontainer.url')
             if not url:
                 log.error(f"Container '{name}' misses wakontainer.url label. Ignoring this container.")
@@ -25,6 +26,7 @@ def create_conf():
                 'wait_page_time': wait_page_time,
                 'max_lifetime': max_lifetime
             }
+            log.debug(f"Container {name} has conf {conf['containers'][container.name]}")
     log.info(f"Using config : {conf}")
     return conf
 
