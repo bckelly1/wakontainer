@@ -7,9 +7,13 @@ User=root # or another user which can access the docker socket
 Group=root
 WorkingDirectory=/opt/wakontainer # path to wakontainer source
 
+# You can customize deployment using env vars
+# Environment="WAKONTAINER_BIND_ADDRESS=127.0.0.1" -- default 127.0.0.1
+# Environment="WAKONTAINER_PORT=8080" -- default 8080
+# Environment="WAKONTAINER_NUMBER_OF_WORKERS=3" -- default 3
+
 # Here I used a venv, it may not be your case so change accordingly
-# In this example, wakontainer server will listen on port 8081. If you decide to use another port, change your nginx confs accordingly
-ExecStart=/opt/wakontainer/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8081 app:app --preload
+ExecStart=/opt/wakontainer/venv/bin/python3 wsgi.py
 
 [Install]
 WantedBy=multi-user.target
