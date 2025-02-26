@@ -3,7 +3,7 @@ services:
     container_name: mycontainer
     image: docker/image
     ports:
-      - 127.0.0.1:8080:8080 # configuration depends on your needs and on the container
+      - 127.0.0.1:8081:80 # configuration depends on your needs and on the container
     labels:
       wakontainer.enable: "true" # NEEDED container will be supervised by wakontainer
       wakontainer.url: "files.mybox.htb" # NEEDED container will be accessed through this URL (needed to associate an incoming request with a container)
