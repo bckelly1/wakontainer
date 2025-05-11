@@ -10,13 +10,13 @@ class Logger:
 
         # Handler: all log levels to wakontainer.log (rotating file)
         file_handler = RotatingFileHandler(
-            'wakontainer.log', maxBytes=10*1024*1024, backupCount=5
+            'logs/wakontainer.log', maxBytes=10*1024*1024, backupCount=5
         )
         file_handler.setLevel(logging.DEBUG)  # log all messages to file
 
         # Handler: warnings and errors to wakontainer.err (rotating file)
         err_handler = RotatingFileHandler(
-            'wakontainer.err', maxBytes=5*1024*1024, backupCount=3
+            'logs/wakontainer.err', maxBytes=5*1024*1024, backupCount=3
         )
         err_handler.setLevel(logging.WARNING)  # only WARNING and above
 
