@@ -13,7 +13,7 @@ def create_conf():
     for container in client.containers.list(all=True):
         if container.labels.get('wakontainer.enable'):
             name = container.name
-            log.debug(f"Container {name} has label wakontainer.enable set to true")
+            log.info(f"Container {name} has label wakontainer.enable set to true")
             url = container.labels.get('wakontainer.url')
             if not url:
                 log.error(f"Container '{name}' misses wakontainer.url label. Ignoring this container.")
@@ -26,7 +26,7 @@ def create_conf():
                 'wait_page_time': wait_page_time,
                 'max_lifetime': max_lifetime
             }
-            log.debug(f"Container {name} has conf {conf['containers'][container.name]}")
+            log.info(f"Container {name} has conf {conf['containers'][container.name]}")
     log.info(f"Using config : {conf}")
     return conf
 
@@ -37,7 +37,7 @@ class Container:
 
     def status(self):
         client = docker.from_env()
-        self.logger.debug(f"Getting status of container {self.name}")
+        self.logger.info(f"Getting status of container {self.name}")
         try:
             c = client.containers.get(self.name)
         except docker.errors.NotFound as e:
@@ -53,7 +53,7 @@ class Container:
         current_date = datetime.now(timezone.utc)
         since_last_start = (current_date-given_date).total_seconds()
 
-        self.logger.debug(f"Successfully got status of container {self.name}")
+        self.logger.info(f"Successfully got status of container {self.name}")
 
         return {
           "req_state": "success",
@@ -69,20 +69,20 @@ class Container:
         if status['req_state'] == 'error':
             return status
         if not status['running']:
-            self.logger.debug(f"Container {self.name} is already stopped")
+            self.logger.info(f"Container {self.name} is already stopped")
             return {
                 "req_state": "success",
                 "msg": f"Container {self.name} already stopped"
             }
         if status['since_last_start'] > numsec:
-            self.logger.debug(f"Container {self.name} should be stopped (alive since {status['since_last_start']}s when max is {numsec}s).")
+            self.logger.info(f"Container {self.name} should be stopped (alive since {status['since_last_start']}s when max is {numsec}s).")
             client.containers.get(self.name).stop()
             self.logger.info(f"Container {self.name} successfully stopped")
             return {
                 "req_state": "success",
                 "msg": f"Container stopped after being alive for {status['since_last_start']} seconds"
             }
-        self.logger.debug(f"Container {self.name} does not need to be stopped (alive since {status['since_last_start']}s when max is {numsec}s).")
+        self.logger.info(f"Container {self.name} does not need to be stopped (alive since {status['since_last_start']}s when max is {numsec}s).")
         return {
                 "req_state": "success",
                 "msg": f"Container alive for less than {numsec} seconds. No need to stop"

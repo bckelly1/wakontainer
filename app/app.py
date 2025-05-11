@@ -33,9 +33,11 @@ def stop_containers():
         c_url = c_dic['url']
         c_max_lifetime = c_dic.get('max_lifetime')
         if c_max_lifetime:
-            max_lifetime = c_max_lifetime
+            max_lifetime = 30
         else:
-            max_lifetime = default_max_lifetime
+            #max_lifetime = default_max_lifetime
+            max_lifetime = 30
+        log.info(max_lifetime)
         container = Container(c_name)
         last_req = shared_dict.get(c_url)
         if last_req:
@@ -46,26 +48,26 @@ def stop_containers():
                 container.stop()
             else:
                 pass
-                log.debug(f"Container {c_name} requested less than {max_lifetime}s ago ({since_last_req}s)")
+                log.info(f"Container {c_name} requested less than {max_lifetime}s ago ({since_last_req}s)")
         else:
-            log.debug(f"Unknown last request time for container {c_name}. Checking if stop needed")
+            log.info(f"Unknown last request time for container {c_name}. Checking if stop needed")
             container.stop_if_needed(max_lifetime)
 
 @scheduler.task('interval', id='update_conf', seconds=shared_dict['conf']['default']['update_conf_interval'])
 def update_conf():
-    log.debug("Launching scheduled conf update")
+    log.info("Launching scheduled conf update")
     shared_dict['conf'] = create_conf()
 
 @app.route('/verif')
 def index():
     orig = request.headers.get('X-Original-Host')
-    log.debug(f"Received verification request with url : '{orig}'")
+    log.info(f"Received verification request with url : '{orig}'")
     container = None
     shared_dict[orig] = int(datetime.now().timestamp())
     for c_id in shared_dict['conf'].get('containers'):
         c_dic = shared_dict['conf']['containers'][c_id]
         if c_dic['url'] == orig:
-            log.debug(f"Found corresponding container {c_dic['name']}")
+            log.info(f"Found corresponding container {c_dic['name']}")
             container_wait_time = c_dic.get('wait_page_time')
             container = Container(c_dic['name'])
     if not container:
@@ -75,20 +77,20 @@ def index():
     if ['req_state'] == 'error':
         return "Container does not exist", 401
     if not status['running']:
-        log.debug(f"Containr '{ c_dic['name']}' not running. Returning 401")
+        log.info(f"Containr '{ c_dic['name']}' not running. Returning 401")
         return "Container is not running", 401
-    log.debug(f"Container '{ c_dic['name']}' already running. Returning 200")
+    log.info(f"Container '{ c_dic['name']}' already running. Returning 200")
     return "Container is running"
 
 @app.route('/start')
 def start():
     orig = request.headers.get('X-Original-Host')
-    log.debug(f"Received starting request with 'X-Original-Host' : '{orig}'")
+    log.info(f"Received starting request with 'X-Original-Host' : '{orig}'")
     default_wait_time = shared_dict['conf']['default']['wait_page_time']
     container = None
     for c_dic in shared_dict['conf'].get('containers').values():
         if c_dic['url'] == orig:
-            log.debug(f"Found corresponding container {c_dic['name']}")
+            log.info(f"Found corresponding container {c_dic['name']}")
             container = Container(c_dic['name'])
             container_wait_time = c_dic.get('wait_page_time')
     if not container:
@@ -97,7 +99,7 @@ def start():
     status = container.status()
     if status['req_state'] == 'error':
         return "Container does not exist, check syntax"
-    log.debug(f"Requesting start for container '{ c_dic['name']}'")
+    log.info(f"Requesting start for container '{ c_dic['name']}'")
     s = container.start()
     if s['state'] == 'success' and s['msg'] == 'Already running':
         log.debug(f"Container '{ c_dic['name']}' was already running")
@@ -106,5 +108,5 @@ def start():
         wait_time = container_wait_time
     else:
         wait_time = default_wait_time
-    log.debug(f"Container '{ c_dic['name']}' successfully started, returning wait page")
+    log.info(f"Container '{ c_dic['name']}' successfully started, returning wait page")
     return render_template('wait.html', app_name=orig, wait_time=wait_time)
