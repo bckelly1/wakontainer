@@ -60,7 +60,7 @@ def update_conf():
 
 @app.route('/verif')
 def index():
-    orig = request.headers.get('X-Original-Host')
+    orig = request.headers.get('X-Forwarded-Host')
     log.info(f"Received verification request with url : '{orig}'")
     container = None
     shared_dict[orig] = int(datetime.now().timestamp())
@@ -84,8 +84,8 @@ def index():
 
 @app.route('/start')
 def start():
-    orig = request.headers.get('X-Original-Host')
-    log.info(f"Received starting request with 'X-Original-Host' : '{orig}'")
+    orig = request.headers.get('X-Forwarded-Host')
+    log.info(f"Received starting request with 'X-Forwarded-Host' : '{orig}'")
     default_wait_time = shared_dict['conf']['default']['wait_page_time']
     container = None
     for c_dic in shared_dict['conf'].get('containers').values():
