@@ -86,6 +86,7 @@ def index():
 def start():
     orig = request.headers.get('X-Forwarded-Host')
     log.info(f"Received starting request with 'X-Forwarded-Host' : '{orig}'")
+    shared_dict[orig] = int(datetime.now().timestamp())
     default_wait_time = shared_dict['conf']['default']['wait_page_time']
     container = None
     for c_dic in shared_dict['conf'].get('containers').values():
@@ -94,11 +95,11 @@ def start():
             container = Container(c_dic['name'])
             container_wait_time = c_dic.get('wait_page_time')
     if not container:
-        log.warning(f"Did found corresponding container with wakontainer.url : '{orig}'")
-        return render_template('404.html')
+        log.warning(f"Did not find corresponding container with wakontainer.url : '{orig}'")
+        return render_template('404.html'), 404
     status = container.status()
     if status['req_state'] == 'error':
-        return "Container does not exist, check syntax"
+        return "Container does not exist, check syntax", 404
     log.info(f"Requesting start for container '{ c_dic['name']}'")
     s = container.start()
     if s['state'] == 'success' and s['msg'] == 'Already running':
@@ -110,3 +111,7 @@ def start():
         wait_time = default_wait_time
     log.info(f"Container '{ c_dic['name']}' successfully started, returning wait page")
     return render_template('wait.html', app_name=orig, wait_time=wait_time)
+
+@app.route('/')
+def default():
+    return "No path defined", 404
