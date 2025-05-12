@@ -78,14 +78,15 @@ def start():
     if status['running'] == 'False':
         log.info(f"Requesting start for container '{ c_dic['name']}'")
         s = container.start()
-        log.info(f"Start command result { s['state'] } and { s['msg'] }")
+        log.info(f"testing")
+        # log.info(f"Start command result { s['state'] } and { s['msg'] }")
 
         if container_wait_time:
             wait_time = container_wait_time
         else:
             wait_time = default_wait_time
         log.info(f"Container '{c_dic['name']}' successfully started, returning wait page")
-        return render_template('wait.html', app_name=orig, wait_time=wait_time)
+        return render_template('wait.html', app_name=orig, wait_time=wait_time), 200
 
     if status['running'] == 'False':
         log.debug(f"Container '{c_dic['name']}' was already running")
