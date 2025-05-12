@@ -3,12 +3,11 @@
 FROM python  AS build-env
 WORKDIR /app
 
-COPY --chown=nonroot:nonroot app /app
-
-# First install packages to avoid re-run pip install 
+# First install packages to avoid re-run pip install
 COPY --chown=nonroot:nonroot requirements.txt ./
 RUN pip install --disable-pip-version-check -r requirements.txt --target /packages
 
+COPY --chown=nonroot:nonroot app /app
 
 FROM gcr.io/distroless/python3:latest
 WORKDIR /app

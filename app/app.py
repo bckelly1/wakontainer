@@ -90,4 +90,5 @@ def start():
 
 @app.route('/')
 def default():
-    return "No path defined", 404
+    orig = request.headers.get('X-Forwarded-Host')
+    return redirect(f"https://'{orig}'")
