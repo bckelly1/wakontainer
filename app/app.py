@@ -58,30 +58,6 @@ def update_conf():
     log.info("Launching scheduled conf update")
     shared_dict['conf'] = create_conf()
 
-@app.route('/verif')
-def index():
-    orig = request.headers.get('X-Forwarded-Host')
-    log.info(f"Received verification request with url : '{orig}'")
-    container = None
-    shared_dict[orig] = int(datetime.now().timestamp())
-    for c_id in shared_dict['conf'].get('containers'):
-        c_dic = shared_dict['conf']['containers'][c_id]
-        if c_dic['url'] == orig:
-            log.info(f"Found corresponding container {c_dic['name']}")
-            container_wait_time = c_dic.get('wait_page_time')
-            container = Container(c_dic['name'])
-    if not container:
-        log.warning(f"Did not found corresponding container with wakontainer.url' : '{orig}'")
-        return "Container not found in config", 401
-    status = container.status()
-    if ['req_state'] == 'error':
-        return "Container does not exist", 401
-    if not status['running']:
-        log.info(f"Containr '{ c_dic['name']}' not running. Returning 401")
-        return "Container is not running", 401
-    log.info(f"Container '{ c_dic['name']}' already running. Returning 200")
-    return "Container is running"
-
 @app.route('/start')
 def start():
     orig = request.headers.get('X-Forwarded-Host')
@@ -104,7 +80,7 @@ def start():
     s = container.start()
     if s['state'] == 'success' and s['msg'] == 'Already running':
         log.debug(f"Container '{ c_dic['name']}' was already running")
-        return redirect('/')
+        return redirect(orig)
     if container_wait_time:
         wait_time = container_wait_time
     else:
