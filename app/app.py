@@ -80,7 +80,7 @@ def start():
     s = container.start()
     if s['state'] == 'success' and s['msg'] == 'Already running':
         log.debug(f"Container '{ c_dic['name']}' was already running")
-        return redirect(f"https://'{ orig }'")
+        return redirect(f"https://{ orig }")
     if container_wait_time:
         wait_time = container_wait_time
     else:
