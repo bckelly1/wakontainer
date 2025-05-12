@@ -24,7 +24,7 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
-@scheduler.task('interval', id='stop_containers', seconds=shared_dict['conf']['default']['check_interval'])
+# @scheduler.task('interval', id='stop_containers', seconds=shared_dict['conf']['default']['check_interval'])
 def stop_containers():
     log.debug("Launching scheduled check for stopping containers")
     default_max_lifetime = shared_dict['conf']['default']['max_lifetime']
@@ -53,7 +53,7 @@ def stop_containers():
             log.info(f"Unknown last request time for container {c_name}. Checking if stop needed")
             container.stop_if_needed(max_lifetime)
 
-@scheduler.task('interval', id='update_conf', seconds=shared_dict['conf']['default']['update_conf_interval'])
+# @scheduler.task('interval', id='update_conf', seconds=shared_dict['conf']['default']['update_conf_interval'])
 def update_conf():
     log.info("Launching scheduled conf update")
     shared_dict['conf'] = create_conf()
