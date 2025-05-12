@@ -78,21 +78,20 @@ def start():
     if status['running'] == 'False':
         log.info(f"Requesting start for container '{ c_dic['name']}'")
         s = container.start()
-        # Optionally check for success
-        status = container.status()
+        log.info(f"Start command result { s }")
+
+        if container_wait_time:
+            wait_time = container_wait_time
+        else:
+            wait_time = default_wait_time
+        log.info(f"Container '{c_dic['name']}' successfully started, returning wait page")
+        return render_template('wait.html', app_name=orig, wait_time=wait_time)
+
     if status['running'] == 'False':
         log.debug(f"Container '{c_dic['name']}' was already running")
         return redirect(f"https://{orig}")
     if status['req_state'] == 'error':
         return "Container does not exist, check syntax", 404
-
-    if container_wait_time:
-        wait_time = container_wait_time
-    else:
-        wait_time = default_wait_time
-    log.info(f"Container '{ c_dic['name']}' successfully started, returning wait page")
-    return render_template('wait.html', app_name=orig, wait_time=wait_time)
-
 @app.route('/')
 def default():
     orig = request.headers.get('X-Forwarded-Host')
