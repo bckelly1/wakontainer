@@ -77,7 +77,7 @@ def start():
     log.info(f"Container in status: {status}")
     if status['running'] == 'False':
         log.info(f"Requesting start for container '{ c_dic['name']}'")
-        s = container.start()
+        container.start()
         log.info(f"testing")
         # log.info(f"Start command result { s['state'] } and { s['msg'] }")
 
