@@ -78,7 +78,7 @@ def start():
     if status['running'] == 'False':
         log.info(f"Requesting start for container '{ c_dic['name']}'")
         s = container.start()
-        log.info(f"Start command result { s }")
+        log.info(f"Start command result { s['state'] } and { s['msg'] }")
 
         if container_wait_time:
             wait_time = container_wait_time
