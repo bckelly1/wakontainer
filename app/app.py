@@ -74,6 +74,7 @@ def start():
         log.warning(f"Did not find corresponding container with wakontainer.url : '{orig}'")
         return render_template('404.html'), 404
     status = container.status()
+    log.info(f"Container in status: {status}")
     if status['req_state'] == 'error':
         return "Container does not exist, check syntax", 404
     log.info(f"Requesting start for container '{ c_dic['name']}'")
