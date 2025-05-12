@@ -75,13 +75,17 @@ def start():
         return render_template('404.html'), 404
     status = container.status()
     log.info(f"Container in status: {status}")
+    if status['running'] == 'False':
+        log.info(f"Requesting start for container '{ c_dic['name']}'")
+        s = container.start()
+        # Optionally check for success
+        status = container.status()
+    if status['running'] == 'False':
+        log.debug(f"Container '{c_dic['name']}' was already running")
+        return redirect(f"https://{orig}")
     if status['req_state'] == 'error':
         return "Container does not exist, check syntax", 404
-    log.info(f"Requesting start for container '{ c_dic['name']}'")
-    s = container.start()
-    if s['state'] == 'success' and s['msg'] == 'Already running':
-        log.debug(f"Container '{ c_dic['name']}' was already running")
-        return redirect(f"https://{ orig }")
+
     if container_wait_time:
         wait_time = container_wait_time
     else:
