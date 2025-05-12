@@ -91,4 +91,4 @@ def start():
 @app.route('/')
 def default():
     orig = request.headers.get('X-Forwarded-Host')
-    return redirect(f"https://'{orig}'")
+    return redirect(f"https://{orig}")
