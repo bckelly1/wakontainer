@@ -125,9 +125,9 @@
 
     async function example() {
       console.log("First message");
-      await sleep({{ wait_time }} * 1000); // Wait for 2 seconds
+      await sleep(30 * 1000); // Wait for 2 seconds
       console.log("Second message, after 2 seconds");
-      window.location.href = '/';
+      window.location.href = '{{ app_name }}';
     }
 
     example();
