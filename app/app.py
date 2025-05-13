@@ -75,19 +75,19 @@ def start():
         return render_template('404.html'), 404
     status = container.status()
     log.info(f"Container in status: {status}")
-    if status['running'] == 'False':
-        log.info(f"Requesting start for container { c_dic['name']}")
-        log.info(f"testing before")
-        # container.start()
-        log.info(f"testing after")
-        # log.info(f"Start command result { s['state'] } and { s['msg'] }")
+    # if status['running'] == 'False':
+    log.info(f"Requesting start for container { c_dic['name']}")
+    log.info(f"testing before")
+    container.start()
+    log.info(f"testing after")
+    # log.info(f"Start command result { s['state'] } and { s['msg'] }")
 
-        if container_wait_time:
-            wait_time = container_wait_time
-        else:
-            wait_time = default_wait_time
-        log.info(f"Container '{c_dic['name']}' successfully started, returning wait page")
-        return render_template('wait.html', app_name=orig, wait_time=wait_time), 200
+    if container_wait_time:
+        wait_time = container_wait_time
+    else:
+        wait_time = default_wait_time
+    log.info(f"Container '{c_dic['name']}' successfully started, returning wait page")
+    return render_template('wait.html', app_name=orig, wait_time=wait_time), 200
 
     if status['running'] == 'False':
         log.debug(f"Container '{c_dic['name']}' was already running")
