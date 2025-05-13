@@ -119,11 +119,19 @@
 </footer>
 
 <script>
-    async function artificial_wait() {
-        await new Promise(r => setTimeout(r, {{ wait_time }}* 1000)); // artificial wait, for user experience
-    window.location.href = '/';
-        }
-    window.onload = function() {artificial_wait();}
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function example() {
+      console.log("First message");
+      await sleep({{ wait_time }} * 1000); // Wait for 2 seconds
+      console.log("Second message, after 2 seconds");
+      window.location.href = '/';
+    }
+
+    example();
+    {#window.onload = function() {example();}#}
 </script>
 
 </html>
