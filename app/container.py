@@ -44,6 +44,7 @@ class Container:
             self.logger.error(f"No such container '{self.name}'")
             return {
                 "req_state": "error",
+                "running": None,
                 "msg": f"No such container '{self.name}'"
             }
         else:
